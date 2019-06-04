@@ -2,7 +2,7 @@ exports.up = function(knex, Promise) {
   console.log("creating articles table...");
   return knex.schema.createTable("articles", articlesTable => {
     articlesTable
-      .integer("article_id")
+      .increments("article_id")
       .unique()
       .primary();
     articlesTable.string("title").notNullable();
@@ -10,7 +10,7 @@ exports.up = function(knex, Promise) {
     articlesTable.integer("votes").defaultTo(0);
     articlesTable.string("topic").references("slug");
     articlesTable.string("author").references("username");
-    articlesTable.date("created_at").notNullable();
+    articlesTable.timestamp("created_at").defaultTo(knex.fn.now());
   });
 };
 

@@ -2,13 +2,13 @@ exports.up = function(knex, Promise) {
   console.log("creating comments table...");
   return knex.schema.createTable("comments", commentsTable => {
     commentsTable
-      .integer("comment_id")
+      .increments("comment_id")
       .unique()
       .primary();
     commentsTable.string("author").references("username");
     commentsTable.integer("article_id").references("article_id");
-    commentsTable.integer("votes").defaultsTo(0);
-    commentsTable.date("created_at").notNullable();
+    commentsTable.integer("votes").defaultTo(0);
+    commentsTable.date("created_at").defaultTo(knex.fn.now());
     commentsTable.text("body").notNullable();
   });
 };
