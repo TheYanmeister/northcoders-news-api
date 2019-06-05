@@ -20,4 +20,18 @@ describe("/", () => {
         });
     });
   });
+
+  describe("/api/topics", () => {
+    it("GET status:200 and to send an object of all the topics", () => {
+      return request(app)
+        .get("/api/topics")
+        .expect(200)
+        .then(body => {
+          expect(body.ok).to.equal(true);
+          const testTopics = JSON.parse(body.text).topics;
+          expect(testTopics).to.be.an("array");
+          expect(testTopics[0]).to.contain.keys(["slug", "description"]);
+        });
+    });
+  });
 });

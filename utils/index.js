@@ -1,6 +1,6 @@
-const formatDate = input => {
+const formatDate = comments => {
   const formattedArr = [];
-  input.forEach(obj => {
+  comments.forEach(obj => {
     const newObj = obj;
     newObj.created_at = new Date(newObj.created_at);
     formattedArr.push(newObj);
@@ -20,7 +20,10 @@ const createRefObj = (comments, articles) => {
 };
 
 const formatComments = (comments, refObj) => {
-  const formattedComments = comments;
+  const formattedComments = [];
+  comments.forEach((person, index) => {
+    formattedComments.push({ ...comments[index] });
+  });
   formattedComments.forEach(comment => {
     comment.author = comment.created_by;
     delete comment.created_by;
