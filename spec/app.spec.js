@@ -34,4 +34,22 @@ describe("/", () => {
         });
     });
   });
+
+  describe("/api/users/:username", () => {
+    it("GET status:200 and to send an object of the user's data specified using the usename provided", () => {
+      return request(app)
+        .get("/api/users/butter_bridge")
+        .expect(200)
+        .then(body => {
+          expect(body.ok).to.equal(true);
+          const testUser = JSON.parse(body.text).userData;
+          expect(testUser).to.be.an("array");
+          expect(testUser[0]).to.contain.keys([
+            "username",
+            "avatar_url",
+            "name"
+          ]);
+        });
+    });
+  });
 });
