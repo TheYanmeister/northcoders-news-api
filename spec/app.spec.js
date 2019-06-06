@@ -123,5 +123,27 @@ describe("/", () => {
           );
         });
     });
+    it("GET status:200 and to send an array of objects being the comments of the article passed in the params and accpets the queries sort by and order", () => {
+      return request(app)
+        .get("/api/articles/9/comments")
+        .expect(200)
+        .then(body => {
+          expect(body.ok).to.equal(true);
+          const testComments = JSON.parse(body.text).comments;
+          expect(testComments).to.be.an("array");
+          expect(testComments[0]).to.contain.keys([
+            "author",
+            "comment_id",
+            "body",
+            "created_at",
+            "votes"
+          ]);
+        });
+    });
+    it("GET status:400 when sending a bad query", () => {
+      return request(app)
+        .get("/api/articles/9/comments?sort_by=authorr")
+        .expect(400);
+    });
   });
 });

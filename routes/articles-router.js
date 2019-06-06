@@ -4,7 +4,10 @@ const {
   sendArticle,
   updateVotes
 } = require("../controllers/articles-controllers");
-const { postComment } = require("../controllers/comments-controllers");
+const {
+  postComment,
+  sendCommentsByArticle
+} = require("../controllers/comments-controllers");
 
 articlesRouter.route("/").all(methodNotAllowed);
 
@@ -16,6 +19,7 @@ articlesRouter
 
 articlesRouter
   .route("/:article_id/comments")
+  .get(sendCommentsByArticle)
   .post(postComment)
   .all(methodNotAllowed);
 

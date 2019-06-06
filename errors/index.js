@@ -11,8 +11,12 @@ exports.handle500 = (err, req, res, next) => {
 };
 
 exports.psqlError = (err, req, res, next) => {
-  const psqlCodes = [];
+  const psqlCodes = ["42703"];
   if (psqlCodes.includes(err.code))
-    es.status(400).send({ msg: err.message || "Bad Request" });
+    res.status(400).send({ msg: err.message || "Bad Request" });
   else next();
+};
+
+exports.nothingFound = (err, req, res, next) => {
+  if (err.status === 404) res.status(404).send({ msg: err.msg });
 };

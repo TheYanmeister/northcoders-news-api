@@ -11,4 +11,14 @@ const postCommemtToArticle = (article_id, userInput) => {
     .returning("*");
 };
 
-module.exports = { postCommemtToArticle };
+const fetchCommentsByArticle = (article_id, queries) => {
+  const { sort_by = "created_at", order = "desc" } = queries;
+  return connection
+    .select("*")
+    .from("comments")
+    .where("article_id", article_id)
+    .orderBy(sort_by, order)
+    .returning("*");
+};
+
+module.exports = { postCommemtToArticle, fetchCommentsByArticle };
