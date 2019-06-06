@@ -96,4 +96,32 @@ describe("/", () => {
         });
     });
   });
+
+  describe("/api/articles/:article_id/comments", () => {
+    it("POST status:200 inserts a comment into the comments table when provided with the body, and  username in the body of the request and the article id in the params", () => {
+      return request(app)
+        .post("/api/articles/6/comments")
+        .send({
+          username: "bobbyjoe",
+          body: "i am bobbyjoe and this is my comment"
+        })
+        .expect(200)
+        .then(body => {
+          expect(body.ok).to.equal(true);
+          const testComment = JSON.parse(body.text).commentData;
+          expect(testComment).to.be.an("array");
+          expect(testComment[0]).to.contain.keys([
+            "author",
+            "comment_id",
+            "article_id",
+            "body",
+            "created_at",
+            "votes"
+          ]);
+          expect(testComment[0].body).to.eql(
+            "i am bobbyjoe and this is my comment"
+          );
+        });
+    });
+  });
 });
