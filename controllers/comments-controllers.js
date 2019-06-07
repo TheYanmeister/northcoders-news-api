@@ -25,9 +25,7 @@ exports.sendCommentsByArticle = (req, res, next) => {
         });
       res.status(200).send({ comments });
     })
-    .catch(err => {
-      next(err);
-    });
+    .catch(next);
 };
 
 exports.incVotesForComment = (req, res, next) => {

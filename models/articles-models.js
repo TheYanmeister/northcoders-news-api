@@ -20,7 +20,12 @@ const patchVoteCount = (article_id, votes) => {
 };
 
 const fetchSeveralArticals = queries => {
-  const { sort_by = "created_at", order = "desc", author, topic } = queries;
+  let { sort_by = "created_at", order = "desc", author, topic } = queries;
+  if (order !== "asc" && order !== "desc")
+    return Promise.reject({
+      status: 400,
+      msg: `cannot order by ${order} only by asc and desc`
+    });
   return connection
     .select("articles.*")
     .from("articles")
@@ -28,7 +33,7 @@ const fetchSeveralArticals = queries => {
     .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
     .groupBy("articles.article_id")
     .modify(query => {
-      if (author) query.where({ author });
+      if (author) query.where({ "articles.author": author });
       if (topic) query.where({ topic });
     })
     .orderBy(`articles.${sort_by}`, order)

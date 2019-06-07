@@ -13,6 +13,11 @@ const postCommemtToArticle = (article_id, userInput) => {
 
 const fetchCommentsByArticle = (article_id, queries) => {
   const { sort_by = "created_at", order = "desc" } = queries;
+  if (order !== "asc" && order !== "desc")
+    return Promise.reject({
+      status: 400,
+      msg: `cannot order by ${order} only by asc and desc`
+    });
   return connection
     .select("*")
     .from("comments")

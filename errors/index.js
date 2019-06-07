@@ -11,13 +11,13 @@ exports.handle500 = (err, req, res, next) => {
 };
 
 exports.psqlError = (err, req, res, next) => {
-  const psqlCodes = ["42703"];
+  const psqlCodes = ["42703", "42702", "22P02"];
   if (psqlCodes.includes(err.code))
-    res.status(400).send({ msg: err.message || "Bad Request" });
-  else next();
+    res.status(400).send({ msg: err.message.split(" - ")[1] || "Bad Request" });
+  else next(err);
 };
 
 exports.nothingFound = (err, req, res, next) => {
-  console.log(err);
   if (err.status === 404) res.status(404).send({ msg: err.msg });
+  else res.status(err.status).send({ msg: err.msg });
 };

@@ -7,16 +7,27 @@ const {
 exports.sendArticle = (req, res, next) => {
   article_id = req.params.article_id;
   fetchArticleById(article_id)
-    .then(articleData => res.status(200).send({ articleData }))
+    .then(articleData => {
+      if (articleData.length === 0) {
+        return next({ status: 404, msg: "article not found" });
+      }
+      res.status(200).send({ articleData });
+    })
     .catch(next);
 };
 
 exports.updateVotes = (req, res, next) => {
   article_id = req.params.article_id;
   let votes = req.body.inc_votes;
+  // if (Object.keys(votes).length !== 0 && votes.hasOwnProperty("inc_votes"))
+  //   return next({ status: 400, msg: "must use property 'inc_votes" });
   if (votes === undefined) votes = 0;
   patchVoteCount(article_id, votes)
     .then(articleData => {
+      if (articleData === "error")
+        return next({ status: 400, msg: "must use property 'inc_votes" });
+      if (articleData.length === 0)
+        return next({ status: 404, msg: "article not found" });
       res.status(200).send({ articleData });
     })
     .catch(next);
@@ -33,5 +44,5 @@ exports.sendMultipleArticles = (req, res, next) => {
         });
       res.status(200).send({ articles });
     })
-    .catch(console.log);
+    .catch(next);
 };
