@@ -1,7 +1,8 @@
 const {
   postCommemtToArticle,
   fetchCommentsByArticle,
-  incrementVotes
+  incrementVotes,
+  deleteComment
 } = require("../models/comments-models");
 
 exports.postComment = (req, res, next) => {
@@ -35,5 +36,16 @@ exports.incVotesForComment = (req, res, next) => {
   if (votes === undefined) votes = 0;
   incrementVotes(comment_id, votes)
     .then(commentData => res.status(200).send({ commentData }))
+    .catch(next);
+};
+
+exports.removeComment = (req, res, next) => {
+  const comment_id = req.params.comment_id;
+  deleteComment(comment_id)
+    .then(delCount => {
+      if (delCount === 1) res.sendStatus(204);
+      else if (delCount === 0)
+        return Promise.reject({ status: 404, msg: "comment not found" });
+    })
     .catch(next);
 };

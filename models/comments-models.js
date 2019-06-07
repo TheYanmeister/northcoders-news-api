@@ -30,8 +30,17 @@ const incrementVotes = (comment_id, votes) => {
     .returning("*");
 };
 
+const deleteComment = comment_id => {
+  return connection
+    .select("*")
+    .from("comments")
+    .where("comments.comment_id", "=", comment_id)
+    .del();
+};
+
 module.exports = {
   postCommemtToArticle,
   fetchCommentsByArticle,
-  incrementVotes
+  incrementVotes,
+  deleteComment
 };

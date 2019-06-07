@@ -190,5 +190,10 @@ describe("/", () => {
           ]);
         });
     });
+    it("DELETE status:204 deletes the comment from the database and sends back a 204 status code as conformation", () => {
+      return request(app)
+        .delete("/api/comments/12")
+        .expect(204);
+    });
   });
 });
