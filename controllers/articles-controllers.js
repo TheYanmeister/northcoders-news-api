@@ -1,6 +1,7 @@
 const {
   fetchArticleById,
-  patchVoteCount
+  patchVoteCount,
+  fetchSeveralArticals
 } = require("../models/articles-models");
 
 exports.sendArticle = (req, res, next) => {
@@ -19,4 +20,18 @@ exports.updateVotes = (req, res, next) => {
       res.status(200).send({ articleData });
     })
     .catch(next);
+};
+
+exports.sendMultipleArticles = (req, res, next) => {
+  const queries = req.query;
+  fetchSeveralArticals(queries)
+    .then(articles => {
+      if (articles.length === 0)
+        return Promise.reject({
+          status: 400,
+          msg: "No articles found"
+        });
+      res.status(200).send({ articles });
+    })
+    .catch(console.log);
 };

@@ -1,6 +1,7 @@
 const {
   postCommemtToArticle,
-  fetchCommentsByArticle
+  fetchCommentsByArticle,
+  incrementVotes
 } = require("../models/comments-models");
 
 exports.postComment = (req, res, next) => {
@@ -26,4 +27,13 @@ exports.sendCommentsByArticle = (req, res, next) => {
     .catch(err => {
       next(err);
     });
+};
+
+exports.incVotesForComment = (req, res, next) => {
+  const comment_id = req.params.comment_id;
+  const votes = req.body.inc_votes;
+  if (votes === undefined) votes = 0;
+  incrementVotes(comment_id, votes)
+    .then(commentData => res.status(200).send({ commentData }))
+    .catch(next);
 };

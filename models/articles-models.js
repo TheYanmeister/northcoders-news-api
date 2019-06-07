@@ -19,4 +19,20 @@ const patchVoteCount = (article_id, votes) => {
     .returning("*");
 };
 
-module.exports = { fetchArticleById, patchVoteCount };
+const fetchSeveralArticals = queries => {
+  const { sort_by = "created_at", order = "desc", author, topic } = queries;
+  return connection
+    .select("articles.*")
+    .from("articles")
+    .count({ comment_count: "comments.article_id" })
+    .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
+    .groupBy("articles.article_id")
+    .modify(query => {
+      if (author) query.where({ author });
+      if (topic) query.where({ topic });
+    })
+    .orderBy(`articles.${sort_by}`, order)
+    .returning("*");
+};
+
+module.exports = { fetchArticleById, patchVoteCount, fetchSeveralArticals };

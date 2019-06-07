@@ -21,4 +21,17 @@ const fetchCommentsByArticle = (article_id, queries) => {
     .returning("*");
 };
 
-module.exports = { postCommemtToArticle, fetchCommentsByArticle };
+const incrementVotes = (comment_id, votes) => {
+  return connection
+    .select("*")
+    .from("comments")
+    .where("comments.comment_id", "=", comment_id)
+    .increment("votes", votes)
+    .returning("*");
+};
+
+module.exports = {
+  postCommemtToArticle,
+  fetchCommentsByArticle,
+  incrementVotes
+};

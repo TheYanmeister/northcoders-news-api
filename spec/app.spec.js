@@ -26,9 +26,9 @@ describe("/", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
-        .then(body => {
-          expect(body.ok).to.equal(true);
-          const testTopics = JSON.parse(body.text).topics;
+        .then(res => {
+          expect(res.ok).to.equal(true);
+          const testTopics = JSON.parse(res.text).topics;
           expect(testTopics).to.be.an("array");
           expect(testTopics[0]).to.contain.keys(["slug", "description"]);
         });
@@ -40,9 +40,9 @@ describe("/", () => {
       return request(app)
         .get("/api/users/butter_bridge")
         .expect(200)
-        .then(body => {
-          expect(body.ok).to.equal(true);
-          const testUser = JSON.parse(body.text).userData;
+        .then(res => {
+          expect(res.ok).to.equal(true);
+          const testUser = JSON.parse(res.text).userData;
           expect(testUser).to.be.an("array");
           expect(testUser[0]).to.contain.keys([
             "username",
@@ -58,9 +58,9 @@ describe("/", () => {
       return request(app)
         .get("/api/articles/12")
         .expect(200)
-        .then(body => {
-          expect(body.ok).to.equal(true);
-          const testArticle = JSON.parse(body.text).articleData;
+        .then(res => {
+          expect(res.ok).to.equal(true);
+          const testArticle = JSON.parse(res.text).articleData;
           expect(testArticle).to.be.an("array");
           expect(testArticle[0]).to.contain.keys([
             "author",
@@ -79,9 +79,9 @@ describe("/", () => {
         .patch("/api/articles/6")
         .send({ inc_votes: 50 })
         .expect(200)
-        .then(body => {
-          expect(body.ok).to.equal(true);
-          const testArticle = JSON.parse(body.text).articleData;
+        .then(res => {
+          expect(res.ok).to.equal(true);
+          const testArticle = JSON.parse(res.text).articleData;
           expect(testArticle).to.be.an("array");
           expect(testArticle[0]).to.contain.keys([
             "author",
@@ -106,9 +106,9 @@ describe("/", () => {
           body: "i am bobbyjoe and this is my comment"
         })
         .expect(200)
-        .then(body => {
-          expect(body.ok).to.equal(true);
-          const testComment = JSON.parse(body.text).commentData;
+        .then(res => {
+          expect(res.ok).to.equal(true);
+          const testComment = JSON.parse(res.text).commentData;
           expect(testComment).to.be.an("array");
           expect(testComment[0]).to.contain.keys([
             "author",
@@ -127,9 +127,9 @@ describe("/", () => {
       return request(app)
         .get("/api/articles/9/comments")
         .expect(200)
-        .then(body => {
-          expect(body.ok).to.equal(true);
-          const testComments = JSON.parse(body.text).comments;
+        .then(res => {
+          expect(res.ok).to.equal(true);
+          const testComments = JSON.parse(res.text).comments;
           expect(testComments).to.be.an("array");
           expect(testComments[0]).to.contain.keys([
             "author",
@@ -144,6 +144,51 @@ describe("/", () => {
       return request(app)
         .get("/api/articles/9/comments?sort_by=authorr")
         .expect(400);
+    });
+  });
+
+  describe("/api/articles", () => {
+    it("GET status:200 when asked for articles without any queries returning an array of objects with the correct keys", () => {
+      return request(app)
+        .get("/api/articles")
+        .expect(200)
+        .then(res => {
+          expect(res.ok).to.equal(true);
+          const testArticle = JSON.parse(res.text).articles;
+          expect(testArticle).to.be.an("array");
+          expect(testArticle[0]).to.contain.keys([
+            "article_id",
+            "title",
+            "body",
+            "votes",
+            "topic",
+            "author",
+            "created_at",
+            "comment_count"
+          ]);
+        });
+    });
+  });
+
+  describe("/api/comments/:comment_id", () => {
+    it("PATCH status:200 sends back the object of the comment with the new incremented votes", () => {
+      return request(app)
+        .patch("/api/comments/3")
+        .send({ inc_votes: 15 })
+        .expect(200)
+        .then(res => {
+          expect(res.ok).to.equal(true);
+          const testComment = JSON.parse(res.text).commentData;
+          expect(testComment).to.be.an("array");
+          expect(testComment[0]).to.contain.keys([
+            "article_id",
+            "body",
+            "votes",
+            "author",
+            "created_at",
+            "comment_id"
+          ]);
+        });
     });
   });
 });
