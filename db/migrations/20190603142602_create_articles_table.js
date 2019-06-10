@@ -7,8 +7,14 @@ exports.up = function(knex, Promise) {
     articlesTable.string("title").notNullable();
     articlesTable.text("body").notNullable();
     articlesTable.integer("votes").defaultTo(0);
-    articlesTable.string("topic").references("slug");
-    articlesTable.string("author").references("username");
+    articlesTable
+      .string("topic")
+      .notNullable()
+      .references("slug");
+    articlesTable
+      .string("author")
+      .notNullable()
+      .references("username");
     articlesTable.timestamp("created_at").defaultTo(knex.fn.now());
   });
 };

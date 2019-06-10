@@ -9,8 +9,13 @@ exports.postComment = (req, res, next) => {
   const article_id = req.params.article_id;
   const userInput = req.body;
   postCommemtToArticle(article_id, userInput)
-    .then(commentData => res.status(200).send({ commentData }))
-    .catch(next);
+    .then(comment => res.status(201).send({ comment }))
+    .catch(err => {
+      if (err)
+        return res
+          .status(400)
+          .send({ msg: "Body must contain keys username and body" });
+    });
 };
 
 exports.sendCommentsByArticle = (req, res, next) => {
@@ -20,8 +25,9 @@ exports.sendCommentsByArticle = (req, res, next) => {
     .then(comments => {
       if (comments.length === 0)
         return Promise.reject({
-          status: 400,
-          msg: "No comments found for this article"
+          status: 404,
+          msg:
+            "Either the article does not exist or there are simply no comments for it"
         });
       res.status(200).send({ comments });
     })
@@ -33,7 +39,7 @@ exports.incVotesForComment = (req, res, next) => {
   const votes = req.body.inc_votes;
   if (votes === undefined) votes = 0;
   incrementVotes(comment_id, votes)
-    .then(commentData => res.status(200).send({ commentData }))
+    .then(comment => res.status(200).send({ comment }))
     .catch(next);
 };
 

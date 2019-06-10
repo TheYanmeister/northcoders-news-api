@@ -7,11 +7,11 @@ const {
 exports.sendArticle = (req, res, next) => {
   article_id = req.params.article_id;
   fetchArticleById(article_id)
-    .then(articleData => {
-      if (articleData.length === 0) {
+    .then(article => {
+      if (article.length === 0) {
         return next({ status: 404, msg: "article not found" });
       }
-      res.status(200).send({ articleData });
+      res.status(200).send({ article });
     })
     .catch(next);
 };
@@ -39,7 +39,7 @@ exports.sendMultipleArticles = (req, res, next) => {
     .then(articles => {
       if (articles.length === 0)
         return Promise.reject({
-          status: 400,
+          status: 404,
           msg: "No articles found"
         });
       res.status(200).send({ articles });
