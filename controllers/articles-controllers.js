@@ -19,8 +19,6 @@ exports.sendArticle = (req, res, next) => {
 exports.updateVotes = (req, res, next) => {
   article_id = req.params.article_id;
   let votes = req.body.inc_votes;
-  // if (Object.keys(votes).length !== 0 && votes.hasOwnProperty("inc_votes"))
-  //   return next({ status: 400, msg: "must use property 'inc_votes" });
   if (votes === undefined) votes = 0;
   patchVoteCount(article_id, votes)
     .then(articleData => {

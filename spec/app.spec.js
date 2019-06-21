@@ -42,7 +42,7 @@ describe("/", () => {
         .expect(200)
         .then(res => {
           expect(res.ok).to.equal(true);
-          const testUser = JSON.parse(res.text).userData;
+          const testUser = JSON.parse(res.text).user;
           expect(testUser).to.be.an("array");
           expect(testUser[0]).to.contain.keys([
             "username",
