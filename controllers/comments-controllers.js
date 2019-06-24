@@ -18,7 +18,7 @@ exports.postComment = (req, res, next) => {
           msg: "This article does not exist"
         });
       postCommemtToArticle(article_id, userInput)
-        .then(comment => res.status(201).send({ comment }))
+        .then(([comment]) => res.status(201).send({ comment }))
         .catch(err => {
           if (err)
             return res
@@ -39,11 +39,13 @@ exports.sendCommentsByArticle = (req, res, next) => {
           status: 404,
           msg: "This article does not exist"
         });
-      fetchCommentsByArticle(article_id, queries).then(comments => {
-        if (comments.length === 0)
-          return res.status(200).send({ comments: [] });
-        res.status(200).send({ comments });
-      });
+      fetchCommentsByArticle(article_id, queries)
+        .then(comments => {
+          if (comments.length === 0)
+            return res.status(200).send({ comments: [] });
+          res.status(200).send({ comments });
+        })
+        .catch(next);
     })
     .catch(next);
 };

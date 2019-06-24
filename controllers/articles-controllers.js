@@ -11,6 +11,7 @@ exports.sendArticle = (req, res, next) => {
       if (article.length === 0) {
         return next({ status: 404, msg: "article not found" });
       }
+      article = article[0];
       res.status(200).send({ article });
     })
     .catch(next);
