@@ -22,12 +22,12 @@ exports.updateVotes = (req, res, next) => {
   let votes = req.body.inc_votes;
   if (votes === undefined) votes = 0;
   patchVoteCount(article_id, votes)
-    .then(articleData => {
-      if (articleData === "error")
+    .then(article => {
+      if (article === "error")
         return next({ status: 400, msg: "must use property 'inc_votes" });
-      if (articleData.length === 0)
+      if (article.length === 0)
         return next({ status: 404, msg: "article not found" });
-      res.status(200).send({ articleData: articleData[0] });
+      res.status(200).send({ article: article[0] });
     })
     .catch(next);
 };

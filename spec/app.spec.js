@@ -77,7 +77,7 @@ describe("/", () => {
         .expect(200)
         .then(res => {
           expect(res.ok).to.equal(true);
-          const testArticle = JSON.parse(res.text).articleData;
+          const testArticle = JSON.parse(res.text).article;
           expect(testArticle).to.be.an("object");
           expect(testArticle).to.contain.keys([
             "author",
