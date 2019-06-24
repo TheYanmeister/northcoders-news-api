@@ -78,8 +78,8 @@ describe("/", () => {
         .then(res => {
           expect(res.ok).to.equal(true);
           const testArticle = JSON.parse(res.text).articleData;
-          expect(testArticle).to.be.an("array");
-          expect(testArticle[0]).to.contain.keys([
+          expect(testArticle).to.be.an("object");
+          expect(testArticle).to.contain.keys([
             "author",
             "title",
             "article_id",
@@ -88,7 +88,7 @@ describe("/", () => {
             "created_at",
             "votes"
           ]);
-          expect(testArticle[0].votes).to.equal(50);
+          expect(testArticle.votes).to.equal(50);
         });
     });
   });
@@ -175,8 +175,8 @@ describe("/", () => {
         .then(res => {
           expect(res.ok).to.equal(true);
           const testComment = JSON.parse(res.text).comment;
-          expect(testComment).to.be.an("array");
-          expect(testComment[0]).to.contain.keys([
+          expect(testComment).to.be.an("object");
+          expect(testComment).to.contain.keys([
             "article_id",
             "body",
             "votes",

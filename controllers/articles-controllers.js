@@ -27,7 +27,7 @@ exports.updateVotes = (req, res, next) => {
         return next({ status: 400, msg: "must use property 'inc_votes" });
       if (articleData.length === 0)
         return next({ status: 404, msg: "article not found" });
-      res.status(200).send({ articleData });
+      res.status(200).send({ articleData: articleData[0] });
     })
     .catch(next);
 };

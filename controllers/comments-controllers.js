@@ -58,7 +58,7 @@ exports.incVotesForComment = (req, res, next) => {
     .then(comment => {
       if (comment.length === 0)
         return Promise.reject({ status: 404, msg: "comment doesn't exist" });
-      res.status(200).send({ comment });
+      res.status(200).send({ comment: comment[0] });
     })
     .catch(next);
 };
