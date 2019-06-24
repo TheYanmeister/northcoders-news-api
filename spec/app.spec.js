@@ -38,17 +38,13 @@ describe("/", () => {
   describe("/api/users/:username", () => {
     it("GET status:200 and to send an object of the user's data specified using the usename provided", () => {
       return request(app)
-        .get("/api/users/butter_bridge")
+        .get("/api/users/icellusedkars")
         .expect(200)
         .then(res => {
           expect(res.ok).to.equal(true);
           const testUser = JSON.parse(res.text).user;
-          expect(testUser).to.be.an("array");
-          expect(testUser[0]).to.contain.keys([
-            "username",
-            "avatar_url",
-            "name"
-          ]);
+          expect(testUser).to.be.an("object");
+          expect(testUser).to.contain.keys(["username", "avatar_url", "name"]);
         });
     });
   });
@@ -60,9 +56,9 @@ describe("/", () => {
         .expect(200)
         .then(res => {
           expect(res.ok).to.equal(true);
-          const testArticle = JSON.parse(res.text).articleData;
-          expect(testArticle).to.be.an("array");
-          expect(testArticle[0]).to.contain.keys([
+          const testArticle = JSON.parse(res.text).article;
+          expect(testArticle).to.be.an("object");
+          expect(testArticle).to.contain.keys([
             "author",
             "title",
             "article_id",
@@ -105,12 +101,12 @@ describe("/", () => {
           username: "bobbyjoe",
           body: "i am bobbyjoe and this is my comment"
         })
-        .expect(200)
+        .expect(201)
         .then(res => {
           expect(res.ok).to.equal(true);
-          const testComment = JSON.parse(res.text).commentData;
-          expect(testComment).to.be.an("array");
-          expect(testComment[0]).to.contain.keys([
+          const testComment = JSON.parse(res.text).comment;
+          expect(testComment).to.be.an("object");
+          expect(testComment).to.contain.keys([
             "author",
             "comment_id",
             "article_id",
@@ -118,7 +114,7 @@ describe("/", () => {
             "created_at",
             "votes"
           ]);
-          expect(testComment[0].body).to.eql(
+          expect(testComment.body).to.eql(
             "i am bobbyjoe and this is my comment"
           );
         });
@@ -178,7 +174,7 @@ describe("/", () => {
         .expect(200)
         .then(res => {
           expect(res.ok).to.equal(true);
-          const testComment = JSON.parse(res.text).commentData;
+          const testComment = JSON.parse(res.text).comment;
           expect(testComment).to.be.an("array");
           expect(testComment[0]).to.contain.keys([
             "article_id",
