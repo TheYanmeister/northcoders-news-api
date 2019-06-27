@@ -40,4 +40,16 @@ const fetchSeveralArticals = queries => {
     .returning("*");
 };
 
-module.exports = { fetchArticleById, patchVoteCount, fetchSeveralArticals };
+const createArticle = articleToInsert => {
+  return connection
+    .insert(articleToInsert)
+    .into("articles")
+    .returning("*");
+};
+
+module.exports = {
+  fetchArticleById,
+  patchVoteCount,
+  fetchSeveralArticals,
+  createArticle
+};

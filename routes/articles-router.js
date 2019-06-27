@@ -3,7 +3,8 @@ const { methodNotAllowed } = require("../errors");
 const {
   sendArticle,
   updateVotes,
-  sendMultipleArticles
+  sendMultipleArticles,
+  postArticle
 } = require("../controllers/articles-controllers");
 const {
   postComment,
@@ -13,6 +14,7 @@ const {
 articlesRouter
   .route("/")
   .get(sendMultipleArticles)
+  .post(postArticle)
   .all(methodNotAllowed);
 
 articlesRouter

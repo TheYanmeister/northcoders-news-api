@@ -1,7 +1,8 @@
 const {
   fetchArticleById,
   patchVoteCount,
-  fetchSeveralArticals
+  fetchSeveralArticals,
+  createArticle
 } = require("../models/articles-models");
 
 exports.sendArticle = (req, res, next) => {
@@ -42,6 +43,15 @@ exports.sendMultipleArticles = (req, res, next) => {
           msg: "No articles found"
         });
       res.status(200).send({ articles });
+    })
+    .catch(next);
+};
+
+exports.postArticle = (req, res, next) => {
+  const article = req.body;
+  createArticle(article)
+    .then(([article]) => {
+      res.status(201).send({ article });
     })
     .catch(next);
 };
