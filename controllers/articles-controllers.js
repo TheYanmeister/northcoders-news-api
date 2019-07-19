@@ -44,7 +44,7 @@ exports.sendMultipleArticles = (req, res, next) => {
         });
       res.status(200).send({ articles });
     })
-    .catch(next);
+    .catch(console.log);
 };
 
 exports.postArticle = (req, res, next) => {

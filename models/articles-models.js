@@ -26,6 +26,7 @@ const fetchSeveralArticals = queries => {
       status: 400,
       msg: `cannot order by ${order} only by asc and desc`
     });
+
   return connection
     .select("articles.*")
     .from("articles")
@@ -36,7 +37,7 @@ const fetchSeveralArticals = queries => {
       if (author) query.where({ "articles.author": author });
       if (topic) query.where({ topic });
     })
-    .orderBy(`articles.${sort_by}`, order)
+    .orderBy(sort_by, order)
     .returning("*");
 };
 

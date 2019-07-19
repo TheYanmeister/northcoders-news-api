@@ -1,6 +1,8 @@
 process.env.NODE_ENV = "test";
 
-const { expect } = require("chai");
+const chai = require("chai");
+expect = chai.expect;
+chai.use(require("chai-sorted"));
 const request = require("supertest");
 
 const app = require("../app");
@@ -162,6 +164,19 @@ describe("/", () => {
             "created_at",
             "comment_count"
           ]);
+        });
+    });
+    it("GET status:200 returns articles sorted by columns when given a sort_by query", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_count")
+        .expect(200)
+        .then(res => {
+          res.body.articles.forEach(article => {
+            article.comment_count = +article.comment_count;
+          });
+          expect(res.body.articles).to.be.sortedBy("comment_count", {
+            descending: true
+          });
         });
     });
   });
