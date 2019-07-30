@@ -3,26 +3,85 @@
 ## Getting Started
 
 Link to the hosted version: https://a-real-spiffing-ncnews.netlify.com  
+Link to the hosted back-end api: https://the-best-nc-news-app.herokuapp.com/api  
 Link to the front-end repository: https://github.com/TheYanmeister/FEND-nc-news-react-app  
 Link to the back-end repository: https://github.com/TheYanmeister/northcoders-news-api
 
-# Prerequisite
+## Endpoints Breakdow
 
-You must have npm and Postgresql installed.
+"/" will just respond with a message of "ok"  
+"/articles" will take a GET or POST request  
+"/articles/:article_id" will take a GET or PATCH request  
+"/articles/:article_id/comments" will take a GET or POST request
+
+"/comments/:comment_id" will take a PATCH or DELETE request
+
+"/topics" will take a GET request
+
+"/users/:username" will take a GET request
+
+## Prerequisite
+
+You must have node and Postgresql installed.
 
 ## Installing
 
-Go to the github repo via the link and copy the clone link.
 Navigate to where you want to clone the repo to and run
 
 ```
-git clone url-here
+git clone https://github.com/TheYanmeister/northcoders-news-api.git
 ```
 
 followed by
 
 ```
+cd northcoders-news-api
+```
+
+and
+
+```
 npm install
+```
+
+you will then need to add a knexfile.js to the root directory by running
+
+```
+touch knexfile.js
+```
+
+you will then need to open it and input the necessary details, it should look something like this:
+
+```
+const { DB_URL } = process.env;
+
+const ENV = process.env.NODE_ENV || "development";
+
+const baseConfig = {
+  client: "",
+  migrations: {
+    directory: "./db/migrations"
+  },
+  seeds: {
+    directory: "./db/seeds"
+  }
+};
+
+const customConfigs = {
+  development: {
+    connection: {
+      database: ""
+    }
+  },
+  test: {
+    connection: {
+      database: ""
+    }
+  },
+  production: { connection: `${DB_URL}?ssl=true` }
+};
+
+module.exports = { ...baseConfig, ...customConfigs[ENV] };
 ```
 
 ## Running a Local Version
@@ -77,12 +136,6 @@ npm run app-test
 npm run utils-test
 ```
 
-Rollback, migrate -> latest, then start inserting data into the database:
-
-```bash
-npm run seed
-```
-
 Run the server with `nodemon`, for hot reload:
 
 ```bash
@@ -94,3 +147,7 @@ Run the server with `node`:
 ```bash
 npm start
 ```
+
+# Author
+
+Yannick van der Heiden
